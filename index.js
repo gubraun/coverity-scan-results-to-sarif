@@ -1,10 +1,23 @@
 const core = require('@actions/core');
 //const github = require('@actions/github');
-
 const fs = require('fs');
+const { exit } = require('process');
 
-const pipelineInputFileName = core.getInput('pipeline-results-json'); // 'coverity-results.json'
-const sarifOutputFileName = core.getInput('output-results-sarif'); // 'coverity-results.sarif'
+//const pipelineInputFileName = core.getInput('pipeline-results-json'); // 'coverity-results.json'
+//const sarifOutputFileName = core.getInput('output-results-sarif'); // 'coverity-results.sarif'
+var pipelineInputFileName = 'coverity-results.json'
+var sarifOutputFileName = 'coverity-results.sarif'
+
+var myArgs = process.argv.slice(2);
+
+if (myArgs.length == 2) {
+    pipelineInputFileName = myArgs[0];
+    sarifOutputFileName = myArgs[1];
+}
+else {
+    console.log('Usage: prog <input-file> <output-file>');
+    exit(0);
+}
 
 // none,note,warning,error
 const impactToLevel = (impact => {
